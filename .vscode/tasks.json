@@ -1,42 +1,48 @@
 {
-  // For more information, visit: https://go.microsoft.com/fwlink/?LinkId=733558
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "npm",
-      "script": "start",
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
-    },
-    {
-      "type": "npm",
-      "script": "test",
-      "isBackground": true,
-      "problemMatcher": {
-        "owner": "typescript",
-        "pattern": "$tsc",
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": {
-            "regexp": "(.*?)"
-          },
-          "endsPattern": {
-            "regexp": "bundle generation complete"
-          }
-        }
-      }
-    }
-  ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Server",
+			"dependsOn": [
+				"npm: start - angular-animation-flow",
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"problemMatcher": [],
+			"label": "npm: start - angular-animation-flow",
+			"detail": "ng serve"
+		},
+		{
+			"label": "Generar y Cambiar Nombre de Componente",
+			"type": "shell",
+			"command": "bash",
+			"args": [
+				"-c",
+				"cng generate component Templates/${input:templateName}"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			},
+			"problemMatcher": []
+		}
+	],
+	"inputs": [
+		{
+			"id": "templateName",
+			"type": "promptString",
+			"default": "nombreDelComponente",
+			"description": "Nombre del componente:"
+		}
+	]
 }

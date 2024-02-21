@@ -19,7 +19,7 @@
       },
       "root": "",
       "sourceRoot": "src",
-      "prefix": "app",
+      "prefix": "ngx-f",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -103,6 +103,39 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        }
+      }
+    },
+    "angular-flow-animation": {
+      "projectType": "library",
+      "root": "projects/angular-flow-animation",
+      "sourceRoot": "projects/angular-flow-animation/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/angular-flow-animation/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/angular-flow-animation/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/angular-flow-animation/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/angular-flow-animation/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }

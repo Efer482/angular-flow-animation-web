@@ -2,6 +2,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "angular-flow-animation": [
+        "dist/angular-flow-animation"
+      ]
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
