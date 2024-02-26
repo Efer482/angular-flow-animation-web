@@ -34,7 +34,7 @@ export class TextInputComponent implements ControlValueAccessor {
   }
   //#region ControlValueAccesor
   writeValue(value: string | number): void {
-    if (value) this.value = value;
+    if (value !== undefined) this.value = value;
   }
   registerOnChange(fn: Function): void {
     this.#onChanged = fn;

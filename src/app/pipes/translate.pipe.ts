@@ -30,9 +30,6 @@ export class TranslatePipe implements PipeTransform, OnDestroy {
 
     // intercambiamos el valor de {key} por el que lo vamos a intercambiar
     for (const param of params) {
-console.log(param.key);
-console.log(translate);
-
       translate = translate.replaceAll(`{${param.key}}`, `${param.value}`);
     }
     // devolvemos la traduccion

@@ -1,26 +1,40 @@
-<div class="w-1/3">
-  <form [formGroup]="formGroup">
-    <app-parametrization (ngModelChange)="update()" formControlName="parametrization" (animate)="animate()" (cancel)="cancelAnimation()"
-      [@parametrizationAnimate]>
-    </app-parametrization>
-  </form>
-</div>
+<div class="h-full flex flex-row gap-2">
 
-@if(!cancel()){
-<div #animationExample>
-  @switch (animationSelected) {
-  @case ('ngxFOpacity') {
-  <ng-container #ngxFOpacity [ngTemplateOutlet]="animationDefer">
-    <div style="background-color: aliceblue;">
+  <div class="h-full grid grid-cols-1  content-center w-2/5">
 
-      <h1>{{animation()}}</h1>
+    <div>
+      <form [formGroup]="formGroup">
+        <app-parametrization (ngModelChange)="update()" formControlName="parametrization" (animate)="animate()"
+          (cancel)="cancelAnimation()" [@initAnimation]>
+        </app-parametrization>
+      </form>
     </div>
-  </ng-container>
-  }
-  }
-</div>
-}
 
+    <div [@initAnimation] class="text-neutral-50">
+      <app-card>
+        <pre class="overflow-auto">
+        <h1>{{animation()}}</h1>
+      </pre>
+      </app-card>
+    </div>
+  </div>
+  <div class="w-3/5 overflow-auto m-10">
+    @if(!cancel()){
+    <div #animationExample>
+      @switch (animationSelected) {
+      @case ('ngxFOpacity') {
+      <ng-container #ngxFOpacity [ngTemplateOutlet]="animationDefer">
+        <div class="w-full h-full">
+          <app-gallery></app-gallery>
+        </div>
+      </ng-container>
+      }
+      }
+    </div>
+    }
+  </div>
+
+</div>
 <ng-template #animationDefer let-animation>
   <div #target>
     @defer (on viewport(target); prefetch on idle) {

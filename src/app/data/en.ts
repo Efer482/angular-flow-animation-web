@@ -1,7 +1,9 @@
 export enum EN {
   triggerName = 'Trigger name',
+  minError = 'The value must be greater than {value}',
   speedAnimation = 'Speed animation',
-  speedAnimationType = 'Type of time',
+  delayAnimation = 'Delay animation',
+  speedType = 'Type of time',
   milliseconds = 'Milliseconds',
   seconds = 'Seconds',
   configYourAnimation = 'Configure your animation',

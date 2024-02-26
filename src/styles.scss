@@ -2,8 +2,22 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "tailwindcss/base";
+
 .text-style {
   &.principal {
     @apply text-neutral-100 text-2xl font-bold;
   }
+}
+
+*::-webkit-scrollbar {
+  background-color: theme('colors.primary.color1');
+  border-radius: 0.1rem;
+  overflow: visible;
+  width: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: theme('colors.neutral.color100');
+  border-radius: 0.1rem;
+  overflow: visible;
 }

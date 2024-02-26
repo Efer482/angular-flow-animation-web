@@ -1,23 +1,26 @@
 import { AnimationConfig } from './../../projects/angular-flow-animation/src/lib/interfaces/config.interface';
-import { Component, ElementRef, Renderer2, ViewChild, WritableSignal, computed, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { angularAnimationFlowEnterOpacity } from 'projects/angular-flow-animation/src/public-api';
 import { ParametrizationComponent } from './components/parametrization/parametrization.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ParametrizationForm } from '@interfaces/parametrization.interface';
+import { CardComponent } from '@templates/card/card.component';
+import { GalleryComponent } from '@components/examples/gallery/gallery.component';
+import { exampleCode } from './utilities/exampleCode.utility';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ParametrizationComponent, ReactiveFormsModule],
+  imports: [CommonModule, ParametrizationComponent, ReactiveFormsModule, CardComponent, GalleryComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
   animations: [
-    angularAnimationFlowEnterOpacity({ triggerName: 'parametrizationAnimate', speed: '700ms' }),
+    angularAnimationFlowEnterOpacity({ triggerName: 'initAnimation', speed: '700ms' }),
     angularAnimationFlowEnterOpacity({ speed: '700ms' }),
   ]
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   renderer = inject(Renderer2);
   @ViewChild('animationExample', { static: false }) animationExample!: ElementRef;
   toggle = signal(false);
@@ -26,21 +29,31 @@ export class AppComponent {
   public animationSelected = "ngxFOpacity";
   title = 'angular-flow-animation-web';
   formGroup = new FormGroup({
-    parametrization: new FormControl<ParametrizationForm>({ triggerName: 'tiggerName', speed: 500, speedType: 'ms' })
+    parametrization: new FormControl<ParametrizationForm>(
+      {
+        triggerName: 'tiggerName',
+        speed: 500,
+        speedType: 'ms',
+        delay: 0,
+        delayType: 'ms'
+      })
   });
   animation = computed(() => {
     this.toggle();
     this.cancel();
     this.write();
-    return `trigger(triggerName, [
-    transition(':enter, * => true, * => false', [
-      style({ opacity: 0 }),
-      animate('${this.params.speed} ${this.params.delay}', style({ opacity: 1 }),)
-    ]}),
-    // ...objectStatesGenerator([':enter', 'false'], style({ opacity: 0 })),
-    // ...objectStatesGenerator(['true', ':leave'], style({ opacity: 1 })),
-  ]`
+    return exampleCode(
+    `trigger('tiggerName', [
+        transition(':enter, * => true, * => false', [
+          style({ opacity: 0 }),
+          animate('500ms 0ms', style({ opacity: 1 }),)
+        ]),
+    ])`
+)
   });
+  ngAfterViewInit(): void {
+    this.animate()
+  }
   animate() {
     const myElementNative = this.animationExample.nativeElement;
     this.renderer.setProperty(myElementNative, '@ngxFOpacity', { value: this.toggle(), params: { speed: '0ms' } });
@@ -53,14 +66,19 @@ export class AppComponent {
       this.cancel.set(false);
     }, 0);
   }
-  get params(): Omit<AnimationConfig, 'triggerName'> {
-    const { triggerName, speed, speedType } = this.formGroup.controls.parametrization.value!
+  get params(): AnimationConfig {
+    const { triggerName, speed, speedType, delay, delayType } = this.formGroup.controls.parametrization.value!
     return {
       speed: `${speed}${speedType}`,
-      delay: '0ms'
+      delay: `${delay}${delayType}`,
+      triggerName
     }
   }
   update() {
     this.write.set(!this.write());
+  }
+
+  getElement() {
+
   }
 }

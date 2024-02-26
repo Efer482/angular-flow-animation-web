@@ -12,7 +12,7 @@ import { Options } from '@interfaces/select.interface';
 import { time } from 'src/app/customTypes/times.type';
 
 export type AbstractControlMapped<T> = {
-  [K in keyof T]: T[K] extends infer U ? (U | ((control: AbstractControl<any, any>) => ValidationErrors | null))[] : never;
+  [K in keyof T]: T[K] extends infer U ? (U | ((control: AbstractControl<any, any>) => ValidationErrors | ValidationErrors | null)[])[] : never;
 };
 
 @Component({
@@ -39,11 +39,12 @@ export class ParametrizationComponent implements ControlValueAccessor, Validator
   @Output() cancel: EventEmitter<boolean> = new EventEmitter();
 
   formBuilder = inject(FormBuilder)
-  protected translatePipe = inject(TranslatePipe)
   parametrizationForm = this.formBuilder.group<AbstractControlMapped<ParametrizationForm>>({
-    triggerName: ['triggerName', Validators.required],
-    speed: [500, Validators.required],
-    speedType: ['ms', Validators.required]
+    triggerName: ['triggerName', [Validators.required]],
+    speed: [500, [Validators.required, Validators.min(0)]],
+    speedType: ['ms', [Validators.required]],
+    delay: [0, [Validators.required, Validators.min(0)]],
+    delayType: ['ms', [Validators.required]],
   })
   #suscription: Subscription;
 
@@ -53,6 +54,7 @@ export class ParametrizationComponent implements ControlValueAccessor, Validator
   ]
   constructor() {
     this.#suscription = this.parametrizationForm.valueChanges.pipe(debounceTime(100)).subscribe(() => {
+      if (!this.parametrizationForm.valid) return
       this.#onTouch(this.parametrizationForm.value);
       this.#onChanged(this.parametrizationForm.value);
     });

@@ -4,13 +4,16 @@
     </span>
     <form [formGroup]="parametrizationForm">
       <!-- #region TriggerName -->
-      <app-text-input formControlName="triggerName" [id]="'triggerName'" [type]="'text'"
-        [label]="'triggerName'"></app-text-input>
       <ng-container
         *ngTemplateOutlet="validatorError; context: {controlName: 'triggerName', customValue: 'triggerName'}"></ng-container>
+      <app-text-input formControlName="triggerName" [id]="'triggerName'" [type]="'text'"
+        [label]="'triggerName'"></app-text-input>
+
       <!-- #endregion TriggerName -->
 
       <!-- #region Speed -->
+      <ng-container
+        *ngTemplateOutlet="validatorError; context: {controlName: 'speed', customValue: 'speedAnimation'}"></ng-container>
       <div class="flex flex-row gap-2">
         <div class="w-3/4">
           <app-text-input [min]="0" formControlName="speed" [id]="'speed'" [type]="'number'"
@@ -18,13 +21,29 @@
         </div>
         <div class="w-1/4">
           <app-select-input formControlName="speedType" [translateOptions]="true" [options]="timesOptions"
-            [label]="'speedAnimationType'" [id]="'typeSpeed'"></app-select-input>
+            [label]="'speedType'" [id]="'typeSpeed'"></app-select-input>
 
         </div>
       </div>
-      <ng-container
-        *ngTemplateOutlet="validatorError; context: {controlName: 'speed', customValue: 'speedAnimation'}"></ng-container>
+
       <!-- #endregion Speed -->
+
+      <!-- #region Delay -->
+      <ng-container
+        *ngTemplateOutlet="validatorError; context: {controlName: 'delay', customValue: 'speedAnimation'}"></ng-container>
+      <div class="flex flex-row gap-2">
+        <div class="w-3/4">
+          <app-text-input [min]="0" formControlName="delay" [id]="'delay'" [type]="'number'"
+            [label]="'delayAnimation'"></app-text-input>
+        </div>
+        <div class="w-1/4">
+          <app-select-input formControlName="delayType" [translateOptions]="true" [options]="timesOptions"
+            [label]="'speedType'" [id]="'delaySpeed'"></app-select-input>
+
+        </div>
+      </div>
+
+      <!-- #endregion Delay -->
 
 
     </form>
@@ -43,7 +62,14 @@
 
 
 <ng-template #validatorError let-controlName="controlName" let-customValue="customValue">
-  @if (parametrizationForm.get($any(controlName))!.hasError('required')) {
-  <span>{{'isRequired' | translate:({value: customValue, key: 'customValue'})}}</span>
-  }
+  <div class="my-3">
+    @if (parametrizationForm.get($any(controlName))!.hasError('required')) {
+    <span class="text-red-500">{{'isRequired' | translate:({value: customValue | translate, key:
+      'customValue'})}}</span>
+    }
+    @if (parametrizationForm.get($any(controlName))!.hasError('min')) {
+    <span class="text-red-500">{{'minError' | translate:({value:
+      parametrizationForm.get($any(controlName))!.errors!['min'].min | translate, key: 'value'})}}</span>
+    }
+  </div>
 </ng-template>

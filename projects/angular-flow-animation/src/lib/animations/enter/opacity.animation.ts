@@ -11,7 +11,5 @@ export const angularAnimationFlowEnterOpacity = (
       style({ opacity: 0 }),
       animate(`{{speed}} {{delay}}`, style({ opacity: 1 }),)
     ], { params: { delay, speed } }),
-    // ...objectStatesGenerator([':enter', 'false'], style({ opacity: 0 })),
-    // ...objectStatesGenerator(['true', ':leave'], style({ opacity: 1 })),
   ]);
 }
