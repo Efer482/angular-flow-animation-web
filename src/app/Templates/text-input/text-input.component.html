@@ -1,0 +1,4 @@
+<div (click)="onTouch(value)" [id]="id" class="input-box">
+  <input min="0" [ngModel]="value" (ngModelChange)="setValue($event)" [type]="type" name="" required="">
+  <label>{{label | translate}}</label>
+</div>

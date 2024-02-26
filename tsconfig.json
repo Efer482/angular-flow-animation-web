@@ -27,7 +27,39 @@
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@components/*": [
+        "src/app/components/*",
+      ], // Rutas de módulos para el espacio de nombres '@components'
+      "@interfaces/*": [
+        "src/app/interfaces/*"
+      ], // Rutas de módulos para el espacio de nombres '@interfaces'
+      "@types/*": [
+        "src/app/customTypes/*"
+      ], // Rutas de módulos para el espacio de nombres '@types'
+      "@pipes/*": [
+        "src/app/pipes/*"
+      ], // Rutas de módulos para el espacio de nombres '@pipes'
+      "@customTypes/*": [
+        "src/app/customTypes/*"
+      ], // Rutas de módulos para el espacio de nombres '@customTypes'
+      "@utilitys/*": [
+        "src/app/utilitys/*"
+      ], // Rutas de módulos para el espacio de nombres '@utilitys'
+      "@services/*": [
+        "src/app/services/*"
+      ], // Rutas de módulos para el espacio de nombres '@services'
+      "@templates/*": [
+        "src/app/Templates/*"
+      ], // Rutas de módulos para el espacio de nombres '@templates'
+      "@core/*": [
+        "src/app/core/*"
+      ], // Rutas de módulos para el espacio de nombres '@core'
+      "@data/*": [
+        "src/app/data/*"
+      ], // Rutas de módulos para el espacio de nombres '@core'
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

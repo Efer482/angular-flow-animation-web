@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "angular-flow-animation-web:build:production"
+              "buildTarget": "angular-flow-animation-web:build:production"
             },
             "development": {
-              "browserTarget": "angular-flow-animation-web:build:development"
+              "buildTarget": "angular-flow-animation-web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -83,7 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-flow-animation-web:build"
+            "buildTarget": "angular-flow-animation-web:build"
           }
         },
         "test": {

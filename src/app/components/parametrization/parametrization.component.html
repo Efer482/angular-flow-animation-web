@@ -1,0 +1,49 @@
+<div class="w-full">
+  <app-card>
+    <span title-card>{{'configYourAnimation' | translate}}
+    </span>
+    <form [formGroup]="parametrizationForm">
+      <!-- #region TriggerName -->
+      <app-text-input formControlName="triggerName" [id]="'triggerName'" [type]="'text'"
+        [label]="'triggerName'"></app-text-input>
+      <ng-container
+        *ngTemplateOutlet="validatorError; context: {controlName: 'triggerName', customValue: 'triggerName'}"></ng-container>
+      <!-- #endregion TriggerName -->
+
+      <!-- #region Speed -->
+      <div class="flex flex-row gap-2">
+        <div class="w-3/4">
+          <app-text-input [min]="0" formControlName="speed" [id]="'speed'" [type]="'number'"
+            [label]="'speedAnimation'"></app-text-input>
+        </div>
+        <div class="w-1/4">
+          <app-select-input formControlName="speedType" [translateOptions]="true" [options]="timesOptions"
+            [label]="'speedAnimationType'" [id]="'typeSpeed'"></app-select-input>
+
+        </div>
+      </div>
+      <ng-container
+        *ngTemplateOutlet="validatorError; context: {controlName: 'speed', customValue: 'speedAnimation'}"></ng-container>
+      <!-- #endregion Speed -->
+
+
+    </form>
+    <div class="flex flex-row gap-2">
+      <div class="w-1/2">
+        <app-button (clickEvent)="animate.next(true)" [message]="'animate'" [id]="'animate'"></app-button>
+      </div>
+      <div class="w-1/2">
+        <app-button (clickEvent)="cancel.next(true)" [message]="'cancel'" [id]="'cancel'"></app-button>
+      </div>
+    </div>
+
+  </app-card>
+</div>
+
+
+
+<ng-template #validatorError let-controlName="controlName" let-customValue="customValue">
+  @if (parametrizationForm.get($any(controlName))!.hasError('required')) {
+  <span>{{'isRequired' | translate:({value: customValue, key: 'customValue'})}}</span>
+  }
+</ng-template>

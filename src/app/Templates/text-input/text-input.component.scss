@@ -1,0 +1,38 @@
+.input-box {
+  @apply relative;
+}
+
+.input-box input {
+  @apply w-full;
+  padding: 10px 0;
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 30px;
+  border: none;
+  border-bottom: 1px solid #ffffff6a;
+  outline: none;
+  background: transparent;
+  transition: .5s;
+}
+
+.input-box input:focus {
+  @apply border-b-[1px] border-primary-color1;
+}
+
+.input-box label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 1rem;
+  color: #ffffff6a;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label,
+.input-box input:invalid:not([value=""])~label {
+  @apply text-primary-color1 top-[-20px] left-0;
+  font-size: 12px;
+}

@@ -1,0 +1,8 @@
+<div class="block bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-4"
+  [ngClass]="{'dark:hover:bg-gray-700 hover:bg-gray-100': activateHover}">
+
+  <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
+    <ng-content select="[title-card]"></ng-content>
+  </h5>
+  <ng-content></ng-content>
+</div>

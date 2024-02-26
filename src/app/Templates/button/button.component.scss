@@ -1,0 +1,7 @@
+.button {
+  @apply bg-neutral-900 border-solid border-2 border-sky-500 border-primary-color1 text-neutral-100 p-2 rounded w-full;
+
+  &--degrade {
+    @apply bg-primary-gradial text-neutral-100 p-2 rounded w-full;
+  }
+}

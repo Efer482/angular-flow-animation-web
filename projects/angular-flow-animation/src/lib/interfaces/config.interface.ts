@@ -1,7 +1,7 @@
-import { time } from "../types/time.type";
+import { timer } from "../types/time.type";
 
 export interface AnimationConfig {
-  delay: `${number}${time}`;
-  speed: `${number}${time}`;
+  delay: timer;
+  speed: timer;
   triggerName: string;
 }

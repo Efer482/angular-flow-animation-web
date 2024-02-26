@@ -1,3 +1,34 @@
-<div  [@ngxFOpacity]>
-  hola
+<div class="w-1/3">
+  <form [formGroup]="formGroup">
+    <app-parametrization (ngModelChange)="update()" formControlName="parametrization" (animate)="animate()" (cancel)="cancelAnimation()"
+      [@parametrizationAnimate]>
+    </app-parametrization>
+  </form>
 </div>
+
+@if(!cancel()){
+<div #animationExample>
+  @switch (animationSelected) {
+  @case ('ngxFOpacity') {
+  <ng-container #ngxFOpacity [ngTemplateOutlet]="animationDefer">
+    <div style="background-color: aliceblue;">
+
+      <h1>{{animation()}}</h1>
+    </div>
+  </ng-container>
+  }
+  }
+</div>
+}
+
+<ng-template #animationDefer let-animation>
+  <div #target>
+    @defer (on viewport(target); prefetch on idle) {
+    <ng-content></ng-content>
+    }@loading {
+    Loading...
+    }@error{
+    Loading failed :(
+    }
+  </div>
+</ng-template>

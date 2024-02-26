@@ -1,0 +1,13 @@
+<div (click)="onTouch(value)" name="ds" [id]="id" class="select-box">
+  <select [ngModel]="value" (ngModelChange)="setValue($event)">
+    <option selected="true" value=""></option>
+    @for (option of options; track $index) {
+    @if(translateOptions){
+    <option [value]="option.value">{{$any(option.label) | translate}}</option>
+    }@else{
+    <option [value]="option.value">{{option.label}}</option>
+    }
+    }
+  </select>
+  <label>{{label | translate}}</label>
+</div>
