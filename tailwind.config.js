@@ -7,14 +7,14 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          color1: "#F5703C"
+          color1: "#6FD596"
         },
         secundary: {
-          color1: "#0B1739",
-          color2: "#9A91FB",
-          color3: "#00C2FF",
-          color4: "#343B4F",
-          color5: "#FDB52A"
+          color1: "#DE554E",
+          color2: "#4EDE53",
+          color3: "#5E5150",
+          color4: "#505E5A",
+          color5: "#731702"
         },
         neutral: {
           color100: "#FFFFFF",

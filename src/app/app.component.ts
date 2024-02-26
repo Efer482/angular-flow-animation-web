@@ -64,7 +64,7 @@ export class AppComponent implements AfterViewInit {
     this.cancel.set(true);
     setTimeout(() => {
       this.cancel.set(false);
-    }, 0);
+    }, 1500);
   }
   get params(): AnimationConfig {
     const { triggerName, speed, speedType, delay, delayType } = this.formGroup.controls.parametrization.value!

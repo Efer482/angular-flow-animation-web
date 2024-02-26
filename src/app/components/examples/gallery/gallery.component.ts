@@ -9,7 +9,6 @@ import { Component, Input } from "@angular/core";
 
 })
 export class GalleryComponent {
-  @Input({ required: false }) colums: number = 2;
-
-  classColums = `${'grid-cols-'}${this.colums}`;
+  @Input({ required: false }) colums: number = 3;
+  styleColums = `grid-template-columns: repeat(${this.colums}, minmax(0, 1fr))`;
 }
