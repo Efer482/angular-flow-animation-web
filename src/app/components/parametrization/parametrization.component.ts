@@ -1,11 +1,11 @@
-import { AbstractControl, ControlValueAccessor, FormBuilder, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator, Validators } from '@angular/forms';
-import { Component, EventEmitter, OnDestroy, Output, forwardRef, inject } from '@angular/core';
+import { AbstractControl, ControlValueAccessor, FormBuilder, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef, inject } from '@angular/core';
 import { CardComponent } from '../../Templates/card/card.component';
 import { TranslatePipe } from '@pipes/translate.pipe';
 import { ButtonComponent } from '@templates/button/button.component';
 import { Subscription, debounceTime } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { ParametrizationForm } from '@interfaces/parametrization.interface';
+import { IParametrizationForm, IParametrizationInput } from '@interfaces/parametrization.interface';
 import { TextInputComponent } from '@templates/text-input/text-input.component';
 import { SelectInputComponent } from '@templates/select-input/select-input.component';
 import { Options } from '@interfaces/select.interface';
@@ -34,25 +34,36 @@ export type AbstractControlMapped<T> = {
     }
   ]
 })
-export class ParametrizationComponent implements ControlValueAccessor, Validator, OnDestroy {
+export class ParametrizationComponent implements ControlValueAccessor, Validator, OnDestroy, OnInit {
   @Output() animate: EventEmitter<boolean> = new EventEmitter();
   @Output() cancel: EventEmitter<boolean> = new EventEmitter();
+  @Input() structure: IParametrizationInput<unknown>[] = [];
+  formBuilder = inject(FormBuilder);
 
-  formBuilder = inject(FormBuilder)
-  parametrizationForm = this.formBuilder.group<AbstractControlMapped<ParametrizationForm>>({
+  basicParametrizacion: Record<string, [unknown, Validators[]]> = {
     triggerName: ['triggerName', [Validators.required]],
     speed: [500, [Validators.required, Validators.min(0)]],
     speedType: ['ms', [Validators.required]],
     delay: [0, [Validators.required, Validators.min(0)]],
     delayType: ['ms', [Validators.required]],
-  })
-  #suscription: Subscription;
+  }
+  fullParametrization: Record<string, [unknown, Validators[]]> = {}
+  parametrizationForm!: FormGroup;
+  #suscription!: Subscription;
 
   public timesOptions: (Options & { value: time })[] = [
     { value: 'ms', label: 'milliseconds' },
     { value: 's', label: 'seconds' },
   ]
-  constructor() {
+
+  ngOnInit(): void {
+    this.structure.forEach((input) => {
+      this.fullParametrization[input.key] = [input.value, input.validators]
+    })
+    this.fullParametrization = { ...this.basicParametrizacion, ...this.fullParametrization };
+
+    this.parametrizationForm = this.formBuilder.group(this.fullParametrization);
+
     this.#suscription = this.parametrizationForm.valueChanges.pipe(debounceTime(100)).subscribe(() => {
       if (!this.parametrizationForm.valid) return
       this.#onTouch(this.parametrizationForm.value);
@@ -72,7 +83,8 @@ export class ParametrizationComponent implements ControlValueAccessor, Validator
   setDisabledState(isDisabled: boolean): void {
 
   }
-  writeValue(value: ParametrizationForm): void {
+  writeValue(value: IParametrizationForm): void {
+
     if (value) this.parametrizationForm.setValue(value);
   }
   validate(_: AbstractControl): ValidationErrors | null {

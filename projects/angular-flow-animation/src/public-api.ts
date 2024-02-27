@@ -2,7 +2,7 @@
  * Public API Surface of angular-flow-animation
  */
 // animations
-export * from './lib/animations/enter/opacity.animation';
+export * from './lib/animations/opacity.animation';
 
 // interfaces
 export * from './lib/interfaces/enter/opacity.interface';

@@ -1,11 +1,11 @@
 <div class="h-full flex flex-row gap-2 ">
 
-  <div class="h-full grid grid-cols-1  content-center w-2/5">
+  <div class="h-full grid grid-cols-1  content-center w-2/6">
 
     <div>
       <form [formGroup]="formGroup">
-        <app-parametrization (ngModelChange)="update()" formControlName="parametrization" (animate)="animate()"
-          (cancel)="cancelAnimation()" [@initAnimation]>
+        <app-parametrization [structure]="structure" (ngModelChange)="update()" formControlName="parametrization"
+          (animate)="animate()" (cancel)="cancelAnimation()" [@initAnimation]>
         </app-parametrization>
       </form>
     </div>
@@ -18,7 +18,7 @@
       </app-card>
     </div>
   </div>
-  <div class="w-3/5 overflow-auto m-10  h-screen">
+  <div class="w-2/6 overflow-auto m-10  h-screen">
     @if(!cancel()){
     <div #animationExample>
       @switch (animationSelected) {
