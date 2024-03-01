@@ -6,8 +6,10 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './card.component.html',
-  styleUrl: './card.component.scss'
+  styleUrl: './card.component.scss',
+  animations: [
+  ]
 })
 export class CardComponent {
- @Input() activateHover: boolean = false;
+  @Input() activateHover: boolean = false;
 }

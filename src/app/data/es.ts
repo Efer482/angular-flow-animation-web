@@ -1,4 +1,5 @@
 export enum ES {
+  back = 'Volver',
   triggerName = 'Nombre del trigger',
   minError = 'El valor debe ser mayor que {value}',
   speedAnimation = 'Velocidad de la animación',
@@ -7,7 +8,7 @@ export enum ES {
   milliseconds = 'Milisegundos',
   seconds = 'Segundos',
   configYourAnimation = 'Configura tu animación',
-  isRequired = 'Debes ingresar el {customValue}',
+  isRequired = 'Debes ingresar el parametro de {customValue}',
   animate = 'Animar',
   cancel = 'Cancelar',
   inputSelect = "Seleccionar",

@@ -1,2 +1,2 @@
-export type time = 'ms' | 's'
-export type timer = `${number}${time}`
+export type units = 'ms' | 's'
+export type timer = `${number}${units}`

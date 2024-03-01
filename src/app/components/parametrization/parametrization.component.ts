@@ -1,5 +1,5 @@
 import { AbstractControl, ControlValueAccessor, FormBuilder, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator, Validators } from '@angular/forms';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, forwardRef, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, ViewEncapsulation, forwardRef, inject, input, signal } from '@angular/core';
 import { CardComponent } from '../../Templates/card/card.component';
 import { TranslatePipe } from '@pipes/translate.pipe';
 import { ButtonComponent } from '@templates/button/button.component';
@@ -10,6 +10,8 @@ import { TextInputComponent } from '@templates/text-input/text-input.component';
 import { SelectInputComponent } from '@templates/select-input/select-input.component';
 import { Options } from '@interfaces/select.interface';
 import { time } from 'src/app/customTypes/times.type';
+import { angularAnimationFlowOpacity } from 'projects/angular-flow-animation/src/public-api';
+import { CssHostBindingDirective } from 'src/app/directives/styles-host-binding.directive';
 
 export type AbstractControlMapped<T> = {
   [K in keyof T]: T[K] extends infer U ? (U | ((control: AbstractControl<any, any>) => ValidationErrors | ValidationErrors | null)[])[] : never;
@@ -32,20 +34,22 @@ export type AbstractControlMapped<T> = {
       useExisting: forwardRef(() => ParametrizationComponent),
       multi: true
     }
-  ]
+  ],
+  animations: [
+    angularAnimationFlowOpacity(),
+  ],
+  hostDirectives: [CssHostBindingDirective]
 })
 export class ParametrizationComponent implements ControlValueAccessor, Validator, OnDestroy, OnInit {
-  @Output() animate: EventEmitter<boolean> = new EventEmitter();
-  @Output() cancel: EventEmitter<boolean> = new EventEmitter();
   @Input() structure: IParametrizationInput<unknown>[] = [];
   formBuilder = inject(FormBuilder);
-
+  animationError = signal(false);
   basicParametrizacion: Record<string, [unknown, Validators[]]> = {
-    triggerName: ['triggerName', [Validators.required]],
-    speed: [500, [Validators.required, Validators.min(0)]],
-    speedType: ['ms', [Validators.required]],
-    delay: [0, [Validators.required, Validators.min(0)]],
-    delayType: ['ms', [Validators.required]],
+    triggerName: [null, [Validators.required]],
+    speed: [null, [Validators.required, Validators.min(0)]],
+    speedType: [null, [Validators.required]],
+    delay: [null, [Validators.required, Validators.min(0)]],
+    delayType: [null, [Validators.required]],
   }
   fullParametrization: Record<string, [unknown, Validators[]]> = {}
   parametrizationForm!: FormGroup;
@@ -65,10 +69,12 @@ export class ParametrizationComponent implements ControlValueAccessor, Validator
     this.parametrizationForm = this.formBuilder.group(this.fullParametrization);
 
     this.#suscription = this.parametrizationForm.valueChanges.pipe(debounceTime(100)).subscribe(() => {
-      if (!this.parametrizationForm.valid) return
       this.#onTouch(this.parametrizationForm.value);
       this.#onChanged(this.parametrizationForm.value);
     });
+  }
+  animateError() {
+    this.animationError.set(!this.animationError())
   }
 
   #onChanged: Function = (_: string | number) => { };
@@ -88,7 +94,7 @@ export class ParametrizationComponent implements ControlValueAccessor, Validator
     if (value) this.parametrizationForm.setValue(value);
   }
   validate(_: AbstractControl): ValidationErrors | null {
-    return this.parametrizationForm.valid ? null : { invalidTriggerName: true }
+    return this.parametrizationForm.valid ? null : { invalidParametrization: true }
   }
   ngOnDestroy(): void {
     this.#suscription?.unsubscribe()

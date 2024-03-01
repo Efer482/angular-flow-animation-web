@@ -1,77 +1,78 @@
 <div class="w-full">
-  <app-card>
-    <span title-card>{{'configYourAnimation' | translate}}
-    </span>
-    <form [formGroup]="parametrizationForm">
-      <!-- #region TriggerName -->
-      <ng-container
-        *ngTemplateOutlet="validatorError; context: {controlName: 'triggerName', customValue: 'triggerName'}"></ng-container>
-      <app-text-input formControlName="triggerName" [id]="'triggerName'" [type]="'text'"
-        [label]="'triggerName'"></app-text-input>
+  <div  id="CSSTarget">
 
-      <!-- #endregion TriggerName -->
-
-      <!-- #region Speed -->
-      <ng-container
-        *ngTemplateOutlet="validatorError; context: {controlName: 'speed', customValue: 'speedAnimation'}"></ng-container>
-      <div class="flex flex-row gap-2">
-        <div class="w-3/4">
-          <app-text-input [min]="0" formControlName="speed" [id]="'speed'" [type]="'number'"
-            [label]="'speedAnimation'"></app-text-input>
-        </div>
-        <div class="w-1/4">
-          <app-select-input formControlName="speedType" [translateOptions]="true" [options]="timesOptions"
-            [label]="'speedType'" [id]="'typeSpeed'"></app-select-input>
-
-        </div>
+    <app-card>
+      <div class="flex">
+        <ng-content header select="[header]"></ng-content>
+        <h5 header class="m-auto text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center ">
+          {{'configYourAnimation' | translate}}
+        </h5>
       </div>
 
-      <!-- #endregion Speed -->
+      <form [formGroup]="parametrizationForm">
+        <!-- #region TriggerName -->
+        <ng-container
+          *ngTemplateOutlet="validatorError; context: {controlName: 'triggerName', customValue: 'triggerName'}"></ng-container>
+        <app-text-input formControlName="triggerName" [id]="'triggerName'" [type]="'text'"
+          [label]="'triggerName'"></app-text-input>
 
-      <!-- #region Delay -->
-      <ng-container
-        *ngTemplateOutlet="validatorError; context: {controlName: 'delay', customValue: 'speedAnimation'}"></ng-container>
-      <div class="flex flex-row gap-2">
-        <div class="w-3/4">
-          <app-text-input [min]="0" formControlName="delay" [id]="'delay'" [type]="'number'"
-            [label]="'delayAnimation'"></app-text-input>
+        <!-- #endregion TriggerName -->
+
+        <!-- #region Speed -->
+        <ng-container
+          *ngTemplateOutlet="validatorError; context: {controlName: 'speed', customValue: 'speedAnimation'}"></ng-container>
+        <div class="flex flex-row gap-2">
+          <div class="w-3/4">
+            <app-text-input [min]="0" formControlName="speed" [id]="'speed'" [type]="'number'"
+              [label]="'speedAnimation'"></app-text-input>
+          </div>
+          <div class="w-1/4">
+            <app-select-input formControlName="speedType" [translateOptions]="true" [options]="timesOptions"
+              [label]="'speedType'" [id]="'typeSpeed'"></app-select-input>
+
+          </div>
         </div>
-        <div class="w-1/4">
-          <app-select-input formControlName="delayType" [translateOptions]="true" [options]="timesOptions"
-            [label]="'speedType'" [id]="'delaySpeed'"></app-select-input>
 
+        <!-- #endregion Speed -->
+
+        <!-- #region Delay -->
+        <ng-container
+          *ngTemplateOutlet="validatorError; context: {controlName: 'delay', customValue: 'speedAnimation'}"></ng-container>
+        <div class="flex flex-row gap-2">
+          <div class="w-3/4">
+            <app-text-input [min]="0" formControlName="delay" [id]="'delay'" [type]="'number'"
+              [label]="'delayAnimation'"></app-text-input>
+          </div>
+          <div class="w-1/4">
+            <app-select-input formControlName="delayType" [translateOptions]="true" [options]="timesOptions"
+              [label]="'speedType'" [id]="'delaySpeed'"></app-select-input>
+
+          </div>
         </div>
-      </div>
 
-      <!-- #endregion Delay -->
-      @for (input of structure; track $index) {
-      @if (input.type === "number") {
-      <ng-container *ngTemplateOutlet="validatorError; context: {controlName: input.key}"></ng-container>
-      <app-text-input formControlName="{{input.key}}" [id]="input.key" [type]="'number'"
-        [label]="$any(input.label)"></app-text-input>
-      }
-      }
+        <!-- #endregion Delay -->
+        @for (input of structure; track $index) {
+        @if (input.type === "number") {
+        <ng-container
+          *ngTemplateOutlet="validatorError; context: {controlName: input.key, customValue:input.key}"></ng-container>
+        <app-text-input formControlName="{{input.key}}" [id]="input.key" [type]="'number'"
+          [label]="$any(input.label)"></app-text-input>
+        }
+        }
 
-    </form>
-    <div class="flex flex-row gap-2">
-      <div class="w-1/2">
-        <app-button (clickEvent)="animate.next(true)" [message]="'animate'" [id]="'animate'"></app-button>
-      </div>
-      <div class="w-1/2">
-        <app-button (clickEvent)="cancel.next(true)" [message]="'cancel'" [id]="'cancel'"></app-button>
-      </div>
-    </div>
+      </form>
+      <ng-content footer select="[footer]"></ng-content>
 
-  </app-card>
+    </app-card>
+  </div>
 </div>
 
 
 
 <ng-template #validatorError let-controlName="controlName" let-customValue="customValue">
-  <div class="my-3">
+  <div [@ngxFOpacity]="animationError()" class="my-3">
     @if (parametrizationForm.get($any(controlName))!.hasError('required')) {
-    <span class="text-red-500">{{'isRequired' | translate:({value: customValue | translate, key:
-      'customValue'})}}</span>
+    <span class="text-red-500">{{'isRequired' | translate:({value: customValue | translate, key:'customValue'})}}</span>
     }
     @if (parametrizationForm.get($any(controlName))!.hasError('min')) {
     <span class="text-red-500">{{'minError' | translate:({value:

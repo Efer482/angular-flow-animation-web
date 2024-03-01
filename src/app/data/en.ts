@@ -1,4 +1,5 @@
 export enum EN {
+  back = 'Back',
   triggerName = 'Trigger name',
   minError = 'The value must be greater than {value}',
   speedAnimation = 'Speed animation',

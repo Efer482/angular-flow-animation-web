@@ -1,34 +1,46 @@
 <div class="h-full flex flex-row gap-2 ">
-
   <div class="h-full grid grid-cols-1  content-center w-2/6">
-
     <div>
-      <form [formGroup]="formGroup">
-        <app-parametrization [structure]="structure" (ngModelChange)="update()" formControlName="parametrization"
-          (animate)="animate()" (cancel)="cancelAnimation()" [@initAnimation]>
-        </app-parametrization>
-      </form>
+
+      @if(!toggleMenu()){
+      <div  [@menuAnimation]="!toggleMenu()" >
+        <ng-container [ngTemplateOutlet]="parametrization">
+        </ng-container>
+      </div>
+      }@else{
+      <div [@initAnimation] [@menuAnimation]="toggleMenu()">
+        <ng-container [ngTemplateOutlet]="parametrization">
+        </ng-container>
+      </div>
+      }
     </div>
 
     <div [@initAnimation] class="text-neutral-50">
       <app-card>
         <pre class="overflow-auto">
-        <h1>{{animation()}}</h1>
+        <h1>{{animationCode()}}</h1>
       </pre>
       </app-card>
     </div>
   </div>
+  <div>
+    <app-button [id]="'show'" (clickEvent)="toggleShow()"></app-button>
+  </div>
   <div class="w-2/6 overflow-auto m-10  h-screen">
-    @if(!cancel()){
-    <div #animationExample>
-      @switch (animationSelected) {
-      @case ('ngxFOpacity') {
-      <ng-container #ngxFOpacity [ngTemplateOutlet]="animationDefer">
+    @if (!cancel()) {
+    <div>
+      @if(show()){
+      <div #animationExample>
+        @switch (animationSelected) {
+        @case ('ngxFOpacity') {
         <div class="w-full h-full">
-          <app-gallery></app-gallery>
+          <ng-container #ngxFOpacity [ngTemplateOutlet]="animationDefer">
+            <app-gallery></app-gallery>
+          </ng-container>
         </div>
-      </ng-container>
-      }
+        }
+        }
+      </div>
       }
     </div>
     }
@@ -45,4 +57,25 @@
     Loading failed :(
     }
   </div>
+</ng-template>
+
+<ng-template #parametrization>
+  <form class="relative" [formGroup]="formGroup" action="">
+    <div class="w-full" [attr.ngx-direction]="'RIGHT'">
+      <app-parametrization   [structure]="structure" formControlName="parametrization" (ngModelChange)="update()"
+        (animate)="animate()" (cancel)="cancelAnimation()">
+        <div header class="pt-3 pb-3">
+          <app-button (clickEvent)="toggleMenu.set(!toggleMenu())" [id]="'back'" [message]="'back'"></app-button>
+        </div>
+        <div footer class="flex flex-row gap-2">
+          <div class="w-1/2">
+            <app-button (clickEvent)="animate()" [message]="'animate'" [id]="'animate'"></app-button>
+          </div>
+          <div class="w-1/2">
+            <app-button (clickEvent)="cancelAnimation()" [message]="'cancel'" [id]="'cancel'"></app-button>
+          </div>
+        </div>
+      </app-parametrization>
+    </div>
+  </form>
 </ng-template>
