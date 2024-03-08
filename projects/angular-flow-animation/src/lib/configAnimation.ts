@@ -19,31 +19,27 @@ export function getConfig<T extends AnimationConfig>(functionConfig: Partial<T>,
     leaveCustomParams: {},
   }
   const animation: AnimationConfig = { ...defaultConfig, ...originalConfig, ...functionConfig };
-  const animationParse: Required<Omit<AnimationConfig, 'customParams'>> = {
-    ...animation,
-    delay: animation.delay,
-    speed: animation.speed,
-    duration: animation.duration,
-    triggerName: animation.triggerName,
-    enterPosition: animation.enterPosition || '*',
-    leavePosition: animation.leavePosition || '*',
-    enterOpacity: animation.enterOpacity || '*',
-    leaveOpacity: animation.leaveOpacity || '*',
-    ...animation.enterCustomParams,
-    ...animation.leaveCustomParams,
-  }
+
+  const animationPartail: Partial<AnimationConfig> = {};
+
+  Object.keys(animation).forEach((key) => {
+    animationPartail[key as keyof AnimationConfig] = animation[key as keyof AnimationConfig] ?? '*' as any;
+  });
+
   if (typeof enter === 'boolean') {
-    return animationStatesExtract(animationParse, enter)
+    return animationStatesExtract(animationPartail as Required<AnimationConfig>, enter)
   }
-  return (animationParse as Required<T>)
+  return (animationPartail as T)
 }
 
-export function animationStatesExtract<T extends Required<Omit<AnimationConfig, 'customParams'>>>(animationParams: Required<Omit<AnimationConfig, 'customParams'>>, enter: boolean): ExtractConfig<T> {
-  const animationExtract: Required<ExtractConfig<Omit<AnimationConfig, 'customParams'>>> = {
-    ...animationParams,
-    opacity: (enter ? animationParams.enterOpacity : animationParams.leaveOpacity),
-    position: (enter ? animationParams.enterPosition : animationParams.leavePosition),
-    customparams: (enter ? animationParams.enterCustomParams : animationParams.leaveCustomParams),
-  }
-  return (animationExtract as ExtractConfig<T>)
+export function animationStatesExtract<T extends Required<AnimationConfig>>(animationParams: Required<AnimationConfig>, enter: boolean): ExtractConfig<T> {
+  const animationExtractPartial: Partial<ExtractConfig<AnimationConfig>> = {}
+  Object.keys(animationParams).forEach(key => {
+    const propKey = key.replace("enter", '').replace("leave", "") as keyof ExtractConfig<AnimationConfig>;
+    const enterKey = `enter${propKey}` as keyof Required<AnimationConfig>;
+    const leaveKey = `leave${propKey}` as keyof Required<AnimationConfig>;
+    const valueKey = enter ? enterKey : leaveKey;
+    (animationExtractPartial as any)[propKey] = animationParams[valueKey];
+  });
+  return (animationExtractPartial as ExtractConfig<T>)
 }
